@@ -1,6 +1,6 @@
 const photoFile = document.getElementById('photo-file')
 let photoPreview = document.getElementById('photo-preview')
-let image = new Image();
+let image;
 let photoName;
 document.getElementById('select-image')
 .onclick = function() {
@@ -10,13 +10,14 @@ document.getElementById('select-image')
 window.addEventListener('DOMContentLoaded', () =>{
     photoFile.addEventListener('change', () =>{
         let file = photoFile.files.item(0)
-
         photoName = file.name;
 
         let reader = new FileReader()
         reader.readAsDataURL(file)
         reader.onload = function(event) {
+            image = new Image();
             image.src = event.target.result
+            image.onload = onLoadImage  
         }
     })
 })
@@ -71,7 +72,7 @@ window.addEventListener('DOMContentLoaded', () =>{
     let canvas = document.createElement('canvas')
     let ctx = canvas.getContext('2d')
 
-    image.onload = function() {
+    function onLoadImage() {
         const { width, height } = image
 
         canvas.width = width;
